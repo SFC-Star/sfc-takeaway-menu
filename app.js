@@ -187,7 +187,8 @@ function showReceipt(order) {
   byId("receiptContent").innerHTML = receiptHtml(order);
   const encoded = encodeURIComponent(whatsappMessage(order));
   byId("whatsappButtons").innerHTML = KITCHEN_NUMBERS.map((num) => (
-    `<a target="_blank" rel="noopener" href="https://web.whatsapp.com/send?phone=${num}&text=${encoded}">Send to WhatsApp ${num.slice(-10)}</a>`
+    `<a target="_blank" rel="noopener" href="whatsapp://send?phone=${num}&text=${encoded}">Open WhatsApp app ${num.slice(-10)}</a>
+    <a class="web-fallback" target="_blank" rel="noopener" href="https://web.whatsapp.com/send?phone=${num}&text=${encoded}">Web fallback ${num.slice(-10)}</a>`
   )).join("");
   byId("receiptDialog").showModal();
 }

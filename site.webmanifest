@@ -1,0 +1,18 @@
+{
+  "name": "Star Feast Cafe Takeaway Orders",
+  "short_name": "SFC Orders",
+  "description": "Pure veg takeaway ordering for Star Feast Cafe.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f3ec",
+  "theme_color": "#b41422",
+  "icons": [
+    {
+      "src": "assets/sfc-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
