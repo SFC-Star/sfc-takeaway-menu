@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SFC Takeaway Ordering</title>
+    <meta name="description" content="SFC takeaway QR ordering menu with WhatsApp receipts and billing." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Takeaway only</p>
+        <h1>SFC Cloud Kitchen</h1>
+      </div>
+      <button class="icon-btn" id="adminToggle" title="Admin and orders">Admin</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h2>Scan, order, collect.</h2>
+          <p>Fresh SFC favourites prepared for pickup. No home delivery.</p>
+        </div>
+        <div class="hero-meta">
+          <span>WhatsApp receipt</span>
+          <strong>Instant bill</strong>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Menu controls">
+        <input id="searchInput" type="search" placeholder="Search menu items" autocomplete="off" />
+        <div class="chips" id="categoryChips"></div>
+      </section>
+
+      <section class="menu-grid" id="menuGrid" aria-live="polite"></section>
+    </main>
+
+    <aside class="cart" id="cartPanel" aria-label="Order cart">
+      <div class="cart-head">
+        <div>
+          <p class="eyebrow">Your bill</p>
+          <h2>Order summary</h2>
+        </div>
+        <button class="icon-btn ghost" id="clearCartBtn" title="Clear cart">Clear</button>
+      </div>
+
+      <div id="cartItems" class="cart-items"></div>
+
+      <form id="checkoutForm" class="checkout">
+        <label>
+          Customer name
+          <input id="customerName" required placeholder="Name" />
+        </label>
+        <label>
+          Mobile number
+          <input id="customerPhone" inputmode="tel" required placeholder="10 digit mobile" />
+        </label>
+        <label>
+          Pickup time
+          <input id="pickupTime" type="time" />
+        </label>
+        <label>
+          Payment
+          <select id="paymentMode">
+            <option>Cash</option>
+            <option>UPI</option>
+            <option>Card</option>
+          </select>
+        </label>
+        <label class="wide">
+          Notes
+          <textarea id="orderNotes" rows="2" placeholder="Less spicy, extra chutney, etc."></textarea>
+        </label>
+        <div class="totals">
+          <div><span>Subtotal</span><strong id="subtotalText">Rs 0</strong></div>
+          <div><span>Packaging</span><strong id="packagingText">Rs 0</strong></div>
+          <div class="grand"><span>Total</span><strong id="totalText">Rs 0</strong></div>
+        </div>
+        <button class="primary" type="submit">Place takeaway order</button>
+        <p class="hint">After placing, tap both WhatsApp buttons to send the receipt to the kitchen numbers.</p>
+      </form>
+    </aside>
+
+    <dialog id="receiptDialog">
+      <div class="receipt-actions no-print">
+        <button class="icon-btn ghost" id="closeReceiptBtn">Close</button>
+        <button class="icon-btn" id="printReceiptBtn">Print bill</button>
+      </div>
+      <div id="receiptContent" class="receipt"></div>
+      <div id="whatsappButtons" class="whatsapp no-print"></div>
+    </dialog>
+
+    <dialog id="adminDialog">
+      <div class="admin-head">
+        <div>
+          <p class="eyebrow">Kitchen desk</p>
+          <h2>Orders and QR</h2>
+        </div>
+        <button class="icon-btn ghost" id="closeAdminBtn">Close</button>
+      </div>
+      <div class="admin-grid">
+        <section>
+          <h3>QR generator</h3>
+          <label>
+            Published menu link
+            <input id="qrUrl" placeholder="https://your-menu-link.com" />
+          </label>
+          <button class="primary" id="makeQrBtn">Generate QR</button>
+          <div id="qrPreview" class="qr-preview"></div>
+        </section>
+        <section>
+          <h3>Menu data</h3>
+          <label>
+            Items JSON
+            <textarea id="menuEditor" rows="10"></textarea>
+          </label>
+          <div class="admin-actions">
+            <button class="icon-btn" id="saveMenuBtn">Save menu</button>
+            <button class="icon-btn" id="resetMenuBtn">Reset sample</button>
+          </div>
+        </section>
+        <section>
+          <h3>Order data</h3>
+          <div class="admin-actions">
+            <button class="icon-btn" id="exportCsvBtn">Export CSV</button>
+            <button class="icon-btn" id="exportJsonBtn">Export JSON</button>
+            <button class="icon-btn danger" id="clearOrdersBtn">Clear orders</button>
+          </div>
+          <div id="ordersTable" class="orders-table"></div>
+        </section>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
