@@ -6,7 +6,6 @@ Free static ordering page for SFC Cloud Kitchen.
 
 - Customers scan a QR and place takeaway-only orders.
 - The live menu is pure veg and based on `Copy of SFC Menu.pdf`.
-- 40% advance payment is shown on the cart, receipt, WhatsApp message, and CSV export.
 - The app generates a printable final bill.
 - The receipt can be sent to both WhatsApp numbers:
   - 8209531318

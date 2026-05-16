@@ -1,6 +1,5 @@
 const KITCHEN_NUMBERS = ["918209531318", "918619973534"];
 const PACKAGING_CHARGE = 0;
-const ADVANCE_RATE = 0.4;
 const MENU_VERSION = "veg-menu-2026-05-16";
 
 const DEFAULT_MENU = [
@@ -96,9 +95,7 @@ function totals() {
   const subtotal = cartLines().reduce((sum, item) => sum + item.price * item.qty, 0);
   const packaging = subtotal > 0 ? PACKAGING_CHARGE : 0;
   const total = subtotal + packaging;
-  const advanceAmount = Math.ceil(total * ADVANCE_RATE);
-  const balanceAmount = total - advanceAmount;
-  return { subtotal, packaging, total, advanceAmount, balanceAmount };
+  return { subtotal, packaging, total };
 }
 
 function renderCart() {
@@ -118,8 +115,6 @@ function renderCart() {
   const bill = totals();
   byId("subtotalText").textContent = rupee(bill.subtotal);
   byId("packagingText").textContent = rupee(bill.packaging);
-  byId("advanceText").textContent = rupee(bill.advanceAmount);
-  byId("balanceText").textContent = rupee(bill.balanceAmount);
   byId("totalText").textContent = rupee(bill.total);
 }
 
@@ -137,7 +132,6 @@ function makeOrder() {
     createdAt: now.toISOString(),
     customerName: byId("customerName").value.trim(),
     customerPhone: byId("customerPhone").value.trim(),
-    pickupTime: byId("pickupTime").value || "ASAP",
     paymentMode: byId("paymentMode").value,
     notes: byId("orderNotes").value.trim(),
     type: "Takeaway only",
@@ -151,16 +145,15 @@ function receiptHtml(order) {
   return `
     <h2>Star Feast Cafe</h2>
     <p><strong>Takeaway bill</strong><br>Order: ${order.id}<br>${new Date(order.createdAt).toLocaleString()}</p>
-    <p>Customer: ${order.customerName}<br>Mobile: ${order.customerPhone}<br>Pickup: ${order.pickupTime}<br>Payment: ${order.paymentMode}</p>
+    <p>Customer: ${order.customerName}<br>Mobile: ${order.customerPhone}<br>Payment: ${order.paymentMode}</p>
     <table>
       <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
       <tbody>${order.items.map((item) => `<tr><td>${item.name}<br><small>${rupee(item.price)}</small></td><td>${item.qty}</td><td>${rupee(item.price * item.qty)}</td></tr>`).join("")}</tbody>
     </table>
     <p>Subtotal: <strong>${rupee(order.subtotal)}</strong><br>Packaging: <strong>${rupee(order.packaging)}</strong></p>
     <h3>Final bill: ${rupee(order.total)}</h3>
-    <p>40% advance to confirm: <strong>${rupee(order.advanceAmount)}</strong><br>Balance at pickup: <strong>${rupee(order.balanceAmount)}</strong></p>
     ${order.notes ? `<p>Notes: ${order.notes}</p>` : ""}
-    <p>40% advance payment will be taken. No home delivery. Please collect from counter.</p>
+    <p>No home delivery. Please collect from counter.</p>
   `;
 }
 
@@ -171,7 +164,6 @@ function whatsappMessage(order) {
     `Order: ${order.id}`,
     `Name: ${order.customerName}`,
     `Phone: ${order.customerPhone}`,
-    `Pickup: ${order.pickupTime}`,
     `Payment: ${order.paymentMode}`,
     ``,
     items,
@@ -179,10 +171,7 @@ function whatsappMessage(order) {
     `Subtotal: ${rupee(order.subtotal)}`,
     `Packaging: ${rupee(order.packaging)}`,
     `FINAL BILL: ${rupee(order.total)}`,
-    `40% ADVANCE TO CONFIRM: ${rupee(order.advanceAmount)}`,
-    `BALANCE AT PICKUP: ${rupee(order.balanceAmount)}`,
     order.notes ? `Notes: ${order.notes}` : "",
-    `40% advance payment will be taken.`,
     `Takeaway only. No home delivery.`
   ].filter(Boolean).join("\n");
 }
@@ -214,8 +203,8 @@ function renderOrders() {
             <td>${order.id}<br><small>${order.type}</small></td>
             <td>${order.customerName}<br><small>${order.customerPhone}</small></td>
             <td>${order.items.map((item) => `${item.name} x ${item.qty}`).join("<br>")}</td>
-            <td><strong>${rupee(order.total)}</strong><br><small>Advance: ${rupee(order.advanceAmount || Math.ceil(order.total * ADVANCE_RATE))}</small><br><small>${order.paymentMode}</small></td>
-            <td>${new Date(order.createdAt).toLocaleString()}<br><small>Pickup: ${order.pickupTime}</small></td>
+            <td><strong>${rupee(order.total)}</strong><br><small>${order.paymentMode}</small></td>
+            <td>${new Date(order.createdAt).toLocaleString()}</td>
           </tr>
         `).join("") || `<tr><td colspan="5">No orders yet.</td></tr>`}
       </tbody>
@@ -239,19 +228,16 @@ function downloadFile(filename, content, type) {
 
 function exportCsv() {
   const orders = JSON.parse(localStorage.getItem("sfc_orders") || "[]");
-  const rows = [["Order ID", "Date", "Name", "Phone", "Pickup", "Payment", "Items", "Subtotal", "Packaging", "Advance 40%", "Balance", "Total", "Notes"]];
+  const rows = [["Order ID", "Date", "Name", "Phone", "Payment", "Items", "Subtotal", "Packaging", "Total", "Notes"]];
   orders.forEach((order) => rows.push([
     order.id,
     new Date(order.createdAt).toLocaleString(),
     order.customerName,
     order.customerPhone,
-    order.pickupTime,
     order.paymentMode,
     order.items.map((item) => `${item.name} x ${item.qty}`).join("; "),
     order.subtotal,
     order.packaging,
-    order.advanceAmount || Math.ceil(order.total * ADVANCE_RATE),
-    order.balanceAmount || (order.total - Math.ceil(order.total * ADVANCE_RATE)),
     order.total,
     order.notes || ""
   ]));
