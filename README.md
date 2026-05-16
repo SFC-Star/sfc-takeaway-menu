@@ -5,6 +5,8 @@ Free static ordering page for SFC Cloud Kitchen.
 ## What it does
 
 - Customers scan a QR and place takeaway-only orders.
+- The live menu is pure veg and based on `Copy of SFC Menu.pdf`.
+- 40% advance payment is shown on the cart, receipt, WhatsApp message, and CSV export.
 - The app generates a printable final bill.
 - The receipt can be sent to both WhatsApp numbers:
   - 8209531318
@@ -23,5 +25,3 @@ Use any free static host such as GitHub Pages, Netlify, Vercel, or Cloudflare Pa
 ## Menu editing
 
 Open Admin and edit the Menu data JSON. Save menu stores the edited items in that browser. For a permanent default menu, replace `DEFAULT_MENU` in `app.js`.
-
-The PDF appears image-based, so the items were not reliably extractable as text in this workspace.

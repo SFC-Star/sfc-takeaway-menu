@@ -1,28 +1,50 @@
 const KITCHEN_NUMBERS = ["918209531318", "918619973534"];
 const PACKAGING_CHARGE = 0;
+const ADVANCE_RATE = 0.4;
+const MENU_VERSION = "veg-menu-2026-05-16";
 
 const DEFAULT_MENU = [
-  { id: "veg-burger", name: "Veg Burger", category: "Burgers", price: 59, desc: "Crisp patty, fresh salad, house sauce." },
-  { id: "cheese-burger", name: "Cheese Burger", category: "Burgers", price: 79, desc: "Veg patty with cheese and SFC sauce." },
-  { id: "chicken-burger", name: "Chicken Burger", category: "Burgers", price: 99, desc: "Crispy chicken fillet with classic dressing." },
-  { id: "zinger-burger", name: "Zinger Burger", category: "Burgers", price: 129, desc: "Spicy crunchy chicken with mayo." },
-  { id: "french-fries", name: "French Fries", category: "Sides", price: 69, desc: "Salted fries, made for quick takeaway." },
-  { id: "peri-fries", name: "Peri Peri Fries", category: "Sides", price: 89, desc: "Fries tossed with peri peri seasoning." },
-  { id: "veg-nuggets", name: "Veg Nuggets", category: "Sides", price: 89, desc: "Golden fried bites with dip." },
-  { id: "chicken-popcorn", name: "Chicken Popcorn", category: "Chicken", price: 129, desc: "Bite-size crispy chicken pieces." },
-  { id: "chicken-strips", name: "Chicken Strips", category: "Chicken", price: 149, desc: "Crunchy chicken strips with dip." },
-  { id: "fried-chicken-2pc", name: "Fried Chicken 2 Pc", category: "Chicken", price: 179, desc: "Signature crispy fried chicken." },
-  { id: "fried-chicken-4pc", name: "Fried Chicken 4 Pc", category: "Chicken", price: 329, desc: "Family-size crispy chicken serving." },
-  { id: "veg-wrap", name: "Veg Wrap", category: "Wraps", price: 89, desc: "Veg patty, sauces, and salad in a soft wrap." },
-  { id: "chicken-wrap", name: "Chicken Wrap", category: "Wraps", price: 119, desc: "Crispy chicken wrap with house dressing." },
-  { id: "paneer-wrap", name: "Paneer Wrap", category: "Wraps", price: 129, desc: "Paneer bites with fresh filling." },
-  { id: "veg-momos", name: "Veg Momos", category: "Momos", price: 79, desc: "Steamed veg momos with spicy dip." },
-  { id: "chicken-momos", name: "Chicken Momos", category: "Momos", price: 109, desc: "Steamed chicken momos with dip." },
-  { id: "white-sauce-pasta", name: "White Sauce Pasta", category: "Pasta", price: 149, desc: "Creamy pasta with herbs and vegetables." },
-  { id: "red-sauce-pasta", name: "Red Sauce Pasta", category: "Pasta", price: 139, desc: "Tangy tomato pasta with seasoning." },
-  { id: "cold-coffee", name: "Cold Coffee", category: "Beverages", price: 79, desc: "Chilled coffee shake." },
-  { id: "masala-lemonade", name: "Masala Lemonade", category: "Beverages", price: 49, desc: "Fresh lemon drink with masala." }
+  { id: "strawberry-shake", name: "Strawberry Shake", category: "Shakes", price: 79, desc: "Pure veg shake." },
+  { id: "pineapple-shake", name: "Pineapple Shake", category: "Shakes", price: 79, desc: "Pure veg shake." },
+  { id: "chocolate-shake", name: "Chocolate Shake", category: "Shakes", price: 99, desc: "Pure veg shake." },
+  { id: "cold-coffee", name: "Cold Coffee", category: "Shakes", price: 99, desc: "Chilled coffee." },
+  { id: "kit-kat-shake", name: "Kit-Kat Shake", category: "Shakes", price: 109, desc: "Pure veg shake." },
+  { id: "oreo-shake", name: "Oreo Shake", category: "Shakes", price: 109, desc: "Pure veg shake." },
+  { id: "plain-maggi", name: "Plain Maggi", category: "Maggi", price: 49, desc: "Fresh takeaway Maggi." },
+  { id: "veg-maggi", name: "Veg Maggi", category: "Maggi", price: 69, desc: "Fresh takeaway Maggi." },
+  { id: "masala-maggi", name: "Masala Maggi", category: "Maggi", price: 79, desc: "Fresh takeaway Maggi." },
+  { id: "cheese-maggi", name: "Cheese Maggi", category: "Maggi", price: 99, desc: "Fresh takeaway Maggi." },
+  { id: "onion-capsicum-pizza", name: "Onion Capsicum Pizza", category: "Pizza", price: 199, desc: "Pure veg pizza." },
+  { id: "margherita-pizza", name: "Margherita Pizza", category: "Pizza", price: 249, desc: "Pure veg pizza." },
+  { id: "panner-tandoori-pizza", name: "Panner Tandoori Pizza", category: "Pizza", price: 299, desc: "Pure veg pizza." },
+  { id: "red-sauce-pasta", name: "Red Sauce Pasta", category: "Italian", price: 255, desc: "Pure veg Italian." },
+  { id: "white-sauce-pasta", name: "White Sauce Pasta", category: "Italian", price: 275, desc: "Pure veg Italian." },
+  { id: "garlic-bread", name: "Garlic Bread", category: "Italian", price: 175, desc: "Pure veg side." },
+  { id: "plain-french-fries", name: "Plain French Fries", category: "French Fries", price: 149, desc: "Crispy veg fries." },
+  { id: "masala-french-fries", name: "Masala French Fries", category: "French Fries", price: 185, desc: "Crispy veg fries." },
+  { id: "peri-peri-fries", name: "Peri-Peri Fries", category: "French Fries", price: 185, desc: "Crispy veg fries." },
+  { id: "veg-sandwich", name: "Veg Sandwich", category: "Sandwich", price: 99, desc: "Pure veg sandwich." },
+  { id: "veg-grill-sandwich", name: "Veg Grill Sandwich", category: "Sandwich", price: 129, desc: "Pure veg grilled sandwich." },
+  { id: "panner-tandoori-sandwich", name: "Panner Tandoori Sandwich", category: "Sandwich", price: 209, desc: "Pure veg sandwich." },
+  { id: "alloo-tikki-sandwich", name: "Alloo Tikki Sandwich", category: "Sandwich", price: 199, desc: "Pure veg sandwich." },
+  { id: "veg-burger", name: "Veg Burger", category: "Burger", price: 149, desc: "Pure veg burger." },
+  { id: "cheese-burger", name: "Cheese Burger", category: "Burger", price: 175, desc: "Pure veg burger." },
+  { id: "paneer-burger", name: "Paneer Burger", category: "Burger", price: 199, desc: "Pure veg burger." },
+  { id: "combo-veg-grill-cold-coffee", name: "Veg Grill Sandwich + Cold Coffee", category: "Combo", price: 208, desc: "Combo offer." },
+  { id: "combo-panner-tandoori-cold-coffee", name: "Paneer Tandoori Sandwich + Cold Coffee", category: "Combo", price: 288, desc: "Combo offer." },
+  { id: "combo-onion-fries-shake", name: "Onion Capsicum Pizza + Plain French Fries + Strawberry / Pineapple Shake", category: "Combo", price: 399, desc: "Combo offer." },
+  { id: "combo-panner-pizza-sandwich-coffee", name: "Paneer Tandoori Pizza + Veg Grill Sandwich + 2X Cold Coffee", category: "Combo", price: 599, desc: "Combo offer." },
+  { id: "combo-veg-maggi-cold-coffee", name: "Veg Maggi + Cold Coffee", category: "Combo", price: 149, desc: "Combo offer." },
+  { id: "combo-red-pasta-oreo", name: "Red Sauce Pasta + Oreo Shake", category: "Combo", price: 344, desc: "Combo offer." },
+  { id: "combo-white-pasta-kitkat", name: "White Sauce Pasta + Kit-Kat Shake", category: "Combo", price: 364, desc: "Combo offer." },
+  { id: "combo-family-veg", name: "Tandoori Paneer Pizza + Onion Capsicum Pizza + Red Sauce Pasta + Veg Grill Sandwich + Masala French Fries", category: "Combo", price: 999, desc: "Combo offer." },
+  { id: "shake-offer", name: "15% OFF Any Shake x 3", category: "Offer", price: 0, desc: "Enjoy 15% OFF when you purchase any shake in a minimum quantity of 3, same flavour. Add this as a note for staff confirmation." }
 ];
+
+if (localStorage.getItem("sfc_menu_version") !== MENU_VERSION) {
+  localStorage.setItem("sfc_menu", JSON.stringify(DEFAULT_MENU));
+  localStorage.setItem("sfc_menu_version", MENU_VERSION);
+}
 
 let menu = JSON.parse(localStorage.getItem("sfc_menu") || "null") || DEFAULT_MENU;
 let cart = {};
@@ -54,7 +76,7 @@ function renderMenu() {
     <article class="item-card">
       <div>
         <div class="item-title">${item.name}</div>
-        <div class="item-meta">${item.category} · ${item.desc}</div>
+        <div class="item-meta">${item.category} - ${item.desc}</div>
       </div>
       <div class="item-foot">
         <span class="price">${rupee(item.price)}</span>
@@ -73,7 +95,10 @@ function cartLines() {
 function totals() {
   const subtotal = cartLines().reduce((sum, item) => sum + item.price * item.qty, 0);
   const packaging = subtotal > 0 ? PACKAGING_CHARGE : 0;
-  return { subtotal, packaging, total: subtotal + packaging };
+  const total = subtotal + packaging;
+  const advanceAmount = Math.ceil(total * ADVANCE_RATE);
+  const balanceAmount = total - advanceAmount;
+  return { subtotal, packaging, total, advanceAmount, balanceAmount };
 }
 
 function renderCart() {
@@ -93,6 +118,8 @@ function renderCart() {
   const bill = totals();
   byId("subtotalText").textContent = rupee(bill.subtotal);
   byId("packagingText").textContent = rupee(bill.packaging);
+  byId("advanceText").textContent = rupee(bill.advanceAmount);
+  byId("balanceText").textContent = rupee(bill.balanceAmount);
   byId("totalText").textContent = rupee(bill.total);
 }
 
@@ -122,7 +149,7 @@ function makeOrder() {
 
 function receiptHtml(order) {
   return `
-    <h2>SFC Cloud Kitchen</h2>
+    <h2>Star Feast Cafe</h2>
     <p><strong>Takeaway bill</strong><br>Order: ${order.id}<br>${new Date(order.createdAt).toLocaleString()}</p>
     <p>Customer: ${order.customerName}<br>Mobile: ${order.customerPhone}<br>Pickup: ${order.pickupTime}<br>Payment: ${order.paymentMode}</p>
     <table>
@@ -131,13 +158,14 @@ function receiptHtml(order) {
     </table>
     <p>Subtotal: <strong>${rupee(order.subtotal)}</strong><br>Packaging: <strong>${rupee(order.packaging)}</strong></p>
     <h3>Final bill: ${rupee(order.total)}</h3>
+    <p>40% advance to confirm: <strong>${rupee(order.advanceAmount)}</strong><br>Balance at pickup: <strong>${rupee(order.balanceAmount)}</strong></p>
     ${order.notes ? `<p>Notes: ${order.notes}</p>` : ""}
-    <p>No home delivery. Please collect from counter.</p>
+    <p>40% advance payment will be taken. No home delivery. Please collect from counter.</p>
   `;
 }
 
 function whatsappMessage(order) {
-  const items = order.items.map((item) => `• ${item.name} x ${item.qty} = ${rupee(item.price * item.qty)}`).join("\n");
+  const items = order.items.map((item) => `- ${item.name} x ${item.qty} = ${rupee(item.price * item.qty)}`).join("\n");
   return [
     `SFC TAKEAWAY ORDER`,
     `Order: ${order.id}`,
@@ -151,7 +179,10 @@ function whatsappMessage(order) {
     `Subtotal: ${rupee(order.subtotal)}`,
     `Packaging: ${rupee(order.packaging)}`,
     `FINAL BILL: ${rupee(order.total)}`,
+    `40% ADVANCE TO CONFIRM: ${rupee(order.advanceAmount)}`,
+    `BALANCE AT PICKUP: ${rupee(order.balanceAmount)}`,
     order.notes ? `Notes: ${order.notes}` : "",
+    `40% advance payment will be taken.`,
     `Takeaway only. No home delivery.`
   ].filter(Boolean).join("\n");
 }
@@ -183,7 +214,7 @@ function renderOrders() {
             <td>${order.id}<br><small>${order.type}</small></td>
             <td>${order.customerName}<br><small>${order.customerPhone}</small></td>
             <td>${order.items.map((item) => `${item.name} x ${item.qty}`).join("<br>")}</td>
-            <td><strong>${rupee(order.total)}</strong><br><small>${order.paymentMode}</small></td>
+            <td><strong>${rupee(order.total)}</strong><br><small>Advance: ${rupee(order.advanceAmount || Math.ceil(order.total * ADVANCE_RATE))}</small><br><small>${order.paymentMode}</small></td>
             <td>${new Date(order.createdAt).toLocaleString()}<br><small>Pickup: ${order.pickupTime}</small></td>
           </tr>
         `).join("") || `<tr><td colspan="5">No orders yet.</td></tr>`}
@@ -208,7 +239,7 @@ function downloadFile(filename, content, type) {
 
 function exportCsv() {
   const orders = JSON.parse(localStorage.getItem("sfc_orders") || "[]");
-  const rows = [["Order ID", "Date", "Name", "Phone", "Pickup", "Payment", "Items", "Subtotal", "Packaging", "Total", "Notes"]];
+  const rows = [["Order ID", "Date", "Name", "Phone", "Pickup", "Payment", "Items", "Subtotal", "Packaging", "Advance 40%", "Balance", "Total", "Notes"]];
   orders.forEach((order) => rows.push([
     order.id,
     new Date(order.createdAt).toLocaleString(),
@@ -219,6 +250,8 @@ function exportCsv() {
     order.items.map((item) => `${item.name} x ${item.qty}`).join("; "),
     order.subtotal,
     order.packaging,
+    order.advanceAmount || Math.ceil(order.total * ADVANCE_RATE),
+    order.balanceAmount || (order.total - Math.ceil(order.total * ADVANCE_RATE)),
     order.total,
     order.notes || ""
   ]));
@@ -296,6 +329,7 @@ function bindEvents() {
       }
       menu = nextMenu.map((item) => ({ ...item, price: Number(item.price), desc: item.desc || "" }));
       localStorage.setItem("sfc_menu", JSON.stringify(menu));
+      localStorage.setItem("sfc_menu_version", MENU_VERSION);
       activeCategory = "All";
       cart = {};
       renderCategories();
@@ -310,6 +344,7 @@ function bindEvents() {
     if (confirm("Reset menu to the sample SFC list on this device?")) {
       menu = DEFAULT_MENU;
       localStorage.removeItem("sfc_menu");
+      localStorage.setItem("sfc_menu_version", MENU_VERSION);
       renderMenuEditor();
       renderCategories();
       renderMenu();

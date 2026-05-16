@@ -9,22 +9,26 @@
   </head>
   <body>
     <header class="topbar">
-      <div>
+      <div class="brand">
+        <img src="assets/sfc-logo.png" alt="Star Feast Cafe logo" />
+        <div>
         <p class="eyebrow">Takeaway only</p>
-        <h1>SFC Cloud Kitchen</h1>
+          <h1>Star Feast Cafe</h1>
+        </div>
       </div>
       <button class="icon-btn" id="adminToggle" title="Admin and orders">Admin</button>
     </header>
 
+    <div class="shop-shell">
     <main>
       <section class="hero">
         <div>
-          <h2>Scan, order, collect.</h2>
-          <p>Fresh SFC favourites prepared for pickup. No home delivery.</p>
+          <h2>Pure veg takeaway ordering.</h2>
+          <p>Scan, place your order, pay 40% advance, and collect fresh from SFC. No home delivery.</p>
         </div>
         <div class="hero-meta">
-          <span>WhatsApp receipt</span>
-          <strong>Instant bill</strong>
+          <span>Advance payment</span>
+          <strong>40%</strong>
         </div>
       </section>
 
@@ -75,12 +79,15 @@
         <div class="totals">
           <div><span>Subtotal</span><strong id="subtotalText">Rs 0</strong></div>
           <div><span>Packaging</span><strong id="packagingText">Rs 0</strong></div>
+          <div><span>40% advance</span><strong id="advanceText">Rs 0</strong></div>
+          <div><span>Balance at pickup</span><strong id="balanceText">Rs 0</strong></div>
           <div class="grand"><span>Total</span><strong id="totalText">Rs 0</strong></div>
         </div>
         <button class="primary" type="submit">Place takeaway order</button>
-        <p class="hint">After placing, tap both WhatsApp buttons to send the receipt to the kitchen numbers.</p>
+        <p class="hint">40% advance payment will be taken to confirm the order. After placing, tap both WhatsApp buttons to send the receipt to the kitchen numbers.</p>
       </form>
     </aside>
+    </div>
 
     <dialog id="receiptDialog">
       <div class="receipt-actions no-print">
