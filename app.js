@@ -55,6 +55,10 @@ let lastReceipt = null;
 const rupee = (value) => `Rs ${Math.round(value)}`;
 const byId = (id) => document.getElementById(id);
 
+window.addEventListener("load", () => {
+  setTimeout(() => byId("splashScreen")?.classList.add("hide"), 1250);
+});
+
 function categories() {
   return Array.from(new Set(menu.map((item) => item.category)));
 }
