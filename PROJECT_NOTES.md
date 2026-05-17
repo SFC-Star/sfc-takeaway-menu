@@ -12,7 +12,7 @@ Current behavior:
 - Combo pizza names include `(Medium Size)`.
 - Offer category lets customer choose one shake; it adds 3 quantity with 15% discount.
 - Admin panel asks for password before opening.
-- Admin can save category discounts, export order data, and print a selected saved bill.
+- Admin can add/edit/delete items, create new categories by typing a category name, change item prices, save category discounts, export order data, and print a selected saved bill.
 - No pickup time.
 - No advance payment.
 - Takeaway only, no home delivery.

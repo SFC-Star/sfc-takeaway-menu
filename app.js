@@ -278,6 +278,7 @@ function renderOrders() {
 
 function renderMenuEditor() {
   byId("menuEditor").value = JSON.stringify(menu, null, 2);
+  renderItemEditor();
 }
 
 function renderDiscountAdmin() {
@@ -286,6 +287,71 @@ function renderDiscountAdmin() {
     const discount = discountFor(cat);
     return `<span class="discount-pill">${cat}: ${discount}%</span>`;
   }).join("");
+}
+
+function slugify(text) {
+  return text.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `item-${Date.now()}`;
+}
+
+function renderItemEditor(selectedId = byId("itemEditorSelect")?.value || menu[0]?.id || "") {
+  byId("itemEditorSelect").innerHTML = [
+    `<option value="">Add new item</option>`,
+    ...menu.map((item) => `<option value="${item.id}">${item.category} - ${item.name}</option>`)
+  ].join("");
+  byId("categoryOptions").innerHTML = categories().map((cat) => `<option value="${cat}"></option>`).join("");
+  byId("itemEditorSelect").value = selectedId;
+  const item = menu.find((entry) => entry.id === selectedId);
+  byId("itemNameInput").value = item?.name || "";
+  byId("itemCategoryInput").value = item?.category || "";
+  byId("itemPriceInput").value = item?.price ?? "";
+  byId("itemDescInput").value = item?.desc || "";
+}
+
+function persistMenu(selectedId = "") {
+  localStorage.setItem("sfc_menu", JSON.stringify(menu));
+  localStorage.setItem("sfc_menu_version", MENU_VERSION);
+  activeCategory = categories()[0] || "";
+  cart = {};
+  renderCategories();
+  renderDiscountAdmin();
+  renderMenuEditor();
+  renderItemEditor(selectedId);
+  renderMenu();
+  renderCart();
+}
+
+function saveItemFromAdmin() {
+  const selectedId = byId("itemEditorSelect").value;
+  const name = byId("itemNameInput").value.trim();
+  const category = byId("itemCategoryInput").value.trim();
+  const price = Number(byId("itemPriceInput").value);
+  const desc = byId("itemDescInput").value.trim();
+  if (!name || !category || !Number.isFinite(price)) {
+    alert("Item name, category, and valid price are required.");
+    return;
+  }
+  if (selectedId) {
+    menu = menu.map((item) => item.id === selectedId ? { ...item, name, category, price, desc } : item);
+    persistMenu(selectedId);
+  } else {
+    let id = slugify(name);
+    let count = 2;
+    while (menu.some((item) => item.id === id)) {
+      id = `${slugify(name)}-${count}`;
+      count += 1;
+    }
+    menu.push({ id, name, category, price, desc });
+    persistMenu(id);
+  }
+  alert("Item saved.");
+}
+
+function deleteItemFromAdmin() {
+  const selectedId = byId("itemEditorSelect").value;
+  if (!selectedId) return;
+  if (!confirm("Delete this menu item?")) return;
+  menu = menu.filter((item) => item.id !== selectedId);
+  persistMenu("");
 }
 
 function selectedAdminOrder() {
@@ -413,6 +479,10 @@ function bindEvents() {
   byId("exportCsvBtn").addEventListener("click", exportCsv);
   byId("exportJsonBtn").addEventListener("click", () => downloadFile("sfc-orders.json", localStorage.getItem("sfc_orders") || "[]", "application/json"));
   byId("printSelectedBillBtn").addEventListener("click", printAdminBill);
+  byId("itemEditorSelect").addEventListener("change", () => renderItemEditor());
+  byId("newItemBtn").addEventListener("click", () => renderItemEditor(""));
+  byId("saveItemBtn").addEventListener("click", saveItemFromAdmin);
+  byId("deleteItemBtn").addEventListener("click", deleteItemFromAdmin);
   byId("saveDiscountBtn").addEventListener("click", () => {
     const category = byId("discountCategory").value;
     const percent = Math.min(Math.max(Number(byId("discountPercent").value || 0), 0), 90);
@@ -448,14 +518,7 @@ function bindEvents() {
         throw new Error("Each menu item needs id, name, category, and price.");
       }
       menu = nextMenu.map((item) => ({ ...item, price: Number(item.price), desc: item.desc || "" }));
-      localStorage.setItem("sfc_menu", JSON.stringify(menu));
-      localStorage.setItem("sfc_menu_version", MENU_VERSION);
-      activeCategory = categories()[0];
-      cart = {};
-      renderCategories();
-      renderDiscountAdmin();
-      renderMenu();
-      renderCart();
+      persistMenu(menu[0]?.id || "");
       alert("Menu saved on this device.");
     } catch (error) {
       alert(`Menu not saved: ${error.message}`);
@@ -465,13 +528,7 @@ function bindEvents() {
     if (confirm("Reset menu to the sample SFC list on this device?")) {
       menu = DEFAULT_MENU;
       localStorage.removeItem("sfc_menu");
-      localStorage.setItem("sfc_menu_version", MENU_VERSION);
-      activeCategory = categories()[0];
-      renderMenuEditor();
-      renderCategories();
-      renderDiscountAdmin();
-      renderMenu();
-      renderCart();
+      persistMenu(menu[0]?.id || "");
     }
   });
 }

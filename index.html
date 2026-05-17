@@ -120,6 +120,32 @@
         <section>
           <h3>Menu data</h3>
           <label>
+            Select item
+            <select id="itemEditorSelect"></select>
+          </label>
+          <label>
+            Item name
+            <input id="itemNameInput" placeholder="Food item name" />
+          </label>
+          <label>
+            Category
+            <input id="itemCategoryInput" list="categoryOptions" placeholder="Existing or new category" />
+            <datalist id="categoryOptions"></datalist>
+          </label>
+          <label>
+            Price
+            <input id="itemPriceInput" type="number" min="0" step="1" placeholder="Price" />
+          </label>
+          <label>
+            Description
+            <textarea id="itemDescInput" rows="2" placeholder="Short item description"></textarea>
+          </label>
+          <div class="admin-actions">
+            <button class="icon-btn" id="newItemBtn">New item</button>
+            <button class="icon-btn" id="saveItemBtn">Save item</button>
+            <button class="icon-btn danger" id="deleteItemBtn">Delete item</button>
+          </div>
+          <label>
             Category discount
             <select id="discountCategory"></select>
           </label>
