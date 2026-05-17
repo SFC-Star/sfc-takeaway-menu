@@ -120,6 +120,19 @@
         <section>
           <h3>Menu data</h3>
           <label>
+            Category discount
+            <select id="discountCategory"></select>
+          </label>
+          <label>
+            Discount %
+            <input id="discountPercent" type="number" min="0" max="90" step="1" placeholder="0" />
+          </label>
+          <div class="admin-actions">
+            <button class="icon-btn" id="saveDiscountBtn">Save discount</button>
+            <button class="icon-btn" id="clearDiscountBtn">Clear discount</button>
+          </div>
+          <div id="discountList" class="discount-list"></div>
+          <label>
             Items JSON
             <textarea id="menuEditor" rows="10"></textarea>
           </label>
@@ -133,6 +146,7 @@
           <div class="admin-actions">
             <button class="icon-btn" id="exportCsvBtn">Export CSV</button>
             <button class="icon-btn" id="exportJsonBtn">Export JSON</button>
+            <button class="icon-btn" id="printSelectedBillBtn">Print selected bill</button>
             <button class="icon-btn danger" id="clearOrdersBtn">Clear orders</button>
           </div>
           <div id="ordersTable" class="orders-table"></div>
