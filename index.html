@@ -29,15 +29,23 @@
           <h1>Star Feast Cafe</h1>
         </div>
       </div>
-      <button class="icon-btn" id="adminToggle" title="Admin and orders">Admin</button>
+      <div class="top-actions">
+        <a class="icon-btn nav-btn" href="#menuSection">Menu</a>
+        <button class="icon-btn" id="adminToggle" title="Admin and orders">Admin</button>
+      </div>
     </header>
 
     <div class="shop-shell">
     <main>
       <section class="hero">
         <div>
+          <p class="eyebrow">Scan. Order. Collect.</p>
           <h2>Pure veg takeaway ordering.</h2>
           <p>Scan, place your order, and collect fresh from SFC. No home delivery.</p>
+          <div class="hero-actions">
+            <a class="primary hero-btn" href="#menuSection">Open menu</a>
+            <a class="icon-btn hero-link" href="https://maps.app.goo.gl/1oGam8rLtQ6TG57Z7?g_st=iw" target="_blank" rel="noopener">View location</a>
+          </div>
         </div>
         <div class="hero-meta">
           <span>Takeaway only</span>
@@ -45,7 +53,17 @@
         </div>
       </section>
 
-      <section class="controls" aria-label="Menu controls">
+      <section class="location-band" aria-label="Cafe location">
+        <div class="map-pin" aria-hidden="true"></div>
+        <div>
+          <p class="eyebrow">Find us</p>
+          <h3>Collect from Star Feast Cafe</h3>
+          <p>31, Ganpati Nagar, Before SurajGarh Garden, Chainpura, Mandore, Jodhpur 342001</p>
+        </div>
+        <a class="icon-btn" href="https://maps.app.goo.gl/1oGam8rLtQ6TG57Z7?g_st=iw" target="_blank" rel="noopener">Open map</a>
+      </section>
+
+      <section class="controls" id="menuSection" aria-label="Menu controls">
         <input id="searchInput" type="search" placeholder="Search menu items" autocomplete="off" />
         <div class="chips" id="categoryChips"></div>
       </section>
@@ -125,6 +143,7 @@
         </section>
         <section>
           <h3>Menu data</h3>
+          <p class="admin-note">Menu edits save instantly on this device. To show changes to every customer, export the menu JSON and publish it in the website files.</p>
           <label>
             Select item
             <select id="itemEditorSelect"></select>
@@ -170,10 +189,13 @@
           </label>
           <div class="admin-actions">
             <button class="icon-btn" id="saveMenuBtn">Save menu</button>
+            <button class="icon-btn" id="exportMenuBtn">Export menu</button>
             <button class="icon-btn" id="resetMenuBtn">Reset sample</button>
           </div>
         </section>
         <section>
+          <h3>Analytics</h3>
+          <div id="analyticsPanel" class="analytics-panel"></div>
           <h3>Order data</h3>
           <div class="admin-actions">
             <button class="icon-btn" id="exportCsvBtn">Export CSV</button>

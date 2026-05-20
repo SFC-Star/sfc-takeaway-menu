@@ -80,6 +80,17 @@ function cartCountFor(itemId) {
   return Object.values(cart).filter((line) => line.itemId === itemId).reduce((sum, line) => sum + line.qty, 0);
 }
 
+function storedOrders() {
+  return JSON.parse(localStorage.getItem("sfc_orders") || "[]");
+}
+
+function trackPick(line) {
+  const stats = JSON.parse(localStorage.getItem("sfc_item_picks") || "{}");
+  stats[line.name] = stats[line.name] || { name: line.name, category: line.category, count: 0 };
+  stats[line.name].count += line.qty || 1;
+  localStorage.setItem("sfc_item_picks", JSON.stringify(stats));
+}
+
 function renderCategories() {
   if (!categories().includes(activeCategory)) activeCategory = categories()[0];
   byId("categoryChips").innerHTML = categories().map((cat) => (
@@ -174,6 +185,7 @@ function addToCart(id, options = {}) {
   const name = options.name || (item.category === "Pizza" ? `${item.name} (${size || "Medium"} Size)` : item.name);
   cart[key] = cart[key] || { key, itemId: id, name, category: item.category, price, qty: 0 };
   cart[key].qty += options.qty || 1;
+  trackPick({ name, category: item.category, qty: options.qty || 1 });
   renderMenu();
   renderCart();
 }
@@ -243,7 +255,7 @@ function whatsappMessage(order) {
 }
 
 function saveOrder(order) {
-  const orders = JSON.parse(localStorage.getItem("sfc_orders") || "[]");
+  const orders = storedOrders();
   orders.unshift(order);
   localStorage.setItem("sfc_orders", JSON.stringify(orders));
 }
@@ -260,7 +272,7 @@ function showReceipt(order) {
 }
 
 function renderOrders() {
-  const orders = JSON.parse(localStorage.getItem("sfc_orders") || "[]");
+  const orders = storedOrders();
   byId("ordersTable").innerHTML = `
     <table>
       <thead><tr><th>Select</th><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Time</th></tr></thead>
@@ -277,6 +289,36 @@ function renderOrders() {
         `).join("") || `<tr><td colspan="6">No orders yet.</td></tr>`}
       </tbody>
     </table>
+  `;
+}
+
+function renderAnalytics() {
+  const orders = storedOrders();
+  const pickStats = Object.values(JSON.parse(localStorage.getItem("sfc_item_picks") || "{}"));
+  const itemSales = {};
+  const categorySales = {};
+  let totalItems = 0;
+  orders.forEach((order) => {
+    order.items.forEach((item) => {
+      itemSales[item.name] = itemSales[item.name] || { name: item.name, qty: 0, revenue: 0 };
+      itemSales[item.name].qty += item.qty;
+      itemSales[item.name].revenue += item.price * item.qty;
+      categorySales[item.category] = categorySales[item.category] || { category: item.category, qty: 0, revenue: 0 };
+      categorySales[item.category].qty += item.qty;
+      categorySales[item.category].revenue += item.price * item.qty;
+      totalItems += item.qty;
+    });
+  });
+  const topSold = Object.values(itemSales).sort((a, b) => b.qty - a.qty)[0];
+  const topPicked = pickStats.sort((a, b) => b.count - a.count)[0];
+  const topCategory = Object.values(categorySales).sort((a, b) => b.revenue - a.revenue)[0];
+  const revenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
+  byId("analyticsPanel").innerHTML = `
+    <div class="metric-card"><span>Total orders</span><strong>${orders.length}</strong><small>${totalItems} items sold</small></div>
+    <div class="metric-card"><span>Total revenue</span><strong>${rupee(revenue)}</strong><small>Saved on this device</small></div>
+    <div class="metric-card"><span>Most ordered</span><strong>${topSold?.name || "No data"}</strong><small>${topSold ? `${topSold.qty} qty, ${rupee(topSold.revenue)}` : "Place orders to track"}</small></div>
+    <div class="metric-card"><span>Most selected</span><strong>${topPicked?.name || "No data"}</strong><small>${topPicked ? `${topPicked.count} menu taps` : "Add items to track"}</small></div>
+    <div class="metric-card"><span>Top category</span><strong>${topCategory?.category || "No data"}</strong><small>${topCategory ? `${topCategory.qty} qty, ${rupee(topCategory.revenue)}` : "No category sales yet"}</small></div>
   `;
 }
 
@@ -361,7 +403,7 @@ function deleteItemFromAdmin() {
 function selectedAdminOrder() {
   const chosen = document.querySelector("input[name='adminOrder']:checked");
   if (!chosen) return null;
-  const orders = JSON.parse(localStorage.getItem("sfc_orders") || "[]");
+  const orders = storedOrders();
   return orders.find((order) => order.id === chosen.value) || null;
 }
 
@@ -389,7 +431,7 @@ function downloadFile(filename, content, type) {
 }
 
 function exportCsv() {
-  const orders = JSON.parse(localStorage.getItem("sfc_orders") || "[]");
+  const orders = storedOrders();
   const rows = [["Order ID", "Date", "Name", "Phone", "Payment", "Items", "Subtotal", "Packaging", "Total", "Notes"]];
   orders.forEach((order) => rows.push([
     order.id,
@@ -475,6 +517,7 @@ function bindEvents() {
       sessionStorage.setItem("sfc_admin_ok", "yes");
     }
     renderOrders();
+    renderAnalytics();
     renderMenuEditor();
     renderDiscountAdmin();
     byId("adminDialog").showModal();
@@ -482,6 +525,7 @@ function bindEvents() {
   byId("closeAdminBtn").addEventListener("click", () => byId("adminDialog").close());
   byId("exportCsvBtn").addEventListener("click", exportCsv);
   byId("exportJsonBtn").addEventListener("click", () => downloadFile("sfc-orders.json", localStorage.getItem("sfc_orders") || "[]", "application/json"));
+  byId("exportMenuBtn").addEventListener("click", () => downloadFile("sfc-menu.json", JSON.stringify(menu, null, 2), "application/json"));
   byId("printSelectedBillBtn").addEventListener("click", printAdminBill);
   byId("itemEditorSelect").addEventListener("change", () => renderItemEditor());
   byId("newItemBtn").addEventListener("click", () => renderItemEditor(""));
@@ -508,6 +552,7 @@ function bindEvents() {
     if (confirm("Clear all stored orders on this device?")) {
       localStorage.removeItem("sfc_orders");
       renderOrders();
+      renderAnalytics();
     }
   });
   byId("makeQrBtn").addEventListener("click", () => {
