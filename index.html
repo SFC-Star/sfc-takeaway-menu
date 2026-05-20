@@ -143,7 +143,7 @@
         </section>
         <section>
           <h3>Menu data</h3>
-          <p class="admin-note">Menu edits save instantly on this device. To show changes to every customer, export the menu JSON and publish it in the website files.</p>
+          <p class="admin-note" id="cloudStatus">Cloud menu is loading. If Firebase is connected, admin edits publish to every QR user.</p>
           <label>
             Select item
             <select id="itemEditorSelect"></select>
@@ -208,6 +208,7 @@
       </div>
     </dialog>
 
+    <script src="firebase-config.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

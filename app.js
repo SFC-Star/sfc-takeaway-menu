@@ -51,6 +51,7 @@ let categoryDiscounts = JSON.parse(localStorage.getItem("sfc_category_discounts"
 let cart = {};
 let activeCategory = categories()[0];
 let lastReceipt = null;
+let cloudMenu = null;
 
 const rupee = (value) => `Rs ${Math.round(value)}`;
 const byId = (id) => document.getElementById(id);
@@ -174,6 +175,62 @@ function renderCart() {
   byId("subtotalText").textContent = rupee(bill.subtotal);
   byId("packagingText").textContent = rupee(bill.packaging);
   byId("totalText").textContent = rupee(bill.total);
+}
+
+function firebaseReady() {
+  const config = window.SFC_FIREBASE_CONFIG;
+  return Boolean(config?.apiKey && config?.projectId && config?.appId);
+}
+
+async function initCloudMenu() {
+  if (!firebaseReady()) {
+    const note = byId("cloudStatus");
+    if (note) note.textContent = "Cloud menu is not connected yet. Add Firebase config to publish edits for everyone.";
+    return;
+  }
+  try {
+    const [{ initializeApp }, firestore] = await Promise.all([
+      import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"),
+      import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js")
+    ]);
+    const { getFirestore, doc, onSnapshot, setDoc, serverTimestamp } = firestore;
+    const app = initializeApp(window.SFC_FIREBASE_CONFIG);
+    const db = getFirestore(app);
+    const menuRef = doc(db, "menus", "current");
+    cloudMenu = { setDoc, menuRef, serverTimestamp };
+    onSnapshot(menuRef, (snapshot) => {
+      if (!snapshot.exists()) return;
+      const data = snapshot.data();
+      if (!Array.isArray(data.items)) return;
+      menu = data.items.map((item) => ({ ...item, price: Number(item.price), desc: item.desc || "" }));
+      localStorage.setItem("sfc_menu", JSON.stringify(menu));
+      categoryDiscounts = data.categoryDiscounts || categoryDiscounts;
+      localStorage.setItem("sfc_category_discounts", JSON.stringify(categoryDiscounts));
+      renderCategories();
+      renderDiscountAdmin();
+      renderMenuEditor();
+      renderMenu();
+      renderCart();
+      const note = byId("cloudStatus");
+      if (note) note.textContent = `Cloud menu connected. Last update: ${data.updatedAt?.toDate ? data.updatedAt.toDate().toLocaleString() : "live"}.`;
+    }, (error) => {
+      const note = byId("cloudStatus");
+      if (note) note.textContent = `Cloud menu error: ${error.message}`;
+    });
+  } catch (error) {
+    const note = byId("cloudStatus");
+    if (note) note.textContent = `Cloud menu could not start: ${error.message}`;
+  }
+}
+
+async function publishCloudMenu() {
+  if (!cloudMenu) return false;
+  await cloudMenu.setDoc(cloudMenu.menuRef, {
+    items: menu,
+    categoryDiscounts,
+    updatedAt: cloudMenu.serverTimestamp()
+  }, { merge: true });
+  return true;
 }
 
 function addToCart(id, options = {}) {
@@ -364,6 +421,7 @@ function persistMenu(selectedId = "") {
   renderItemEditor(selectedId);
   renderMenu();
   renderCart();
+  publishCloudMenu().catch((error) => alert(`Saved on this device, but cloud publish failed: ${error.message}`));
 }
 
 function saveItemFromAdmin() {
@@ -536,6 +594,7 @@ function bindEvents() {
     const percent = Math.min(Math.max(Number(byId("discountPercent").value || 0), 0), 90);
     categoryDiscounts[category] = percent;
     localStorage.setItem("sfc_category_discounts", JSON.stringify(categoryDiscounts));
+    publishCloudMenu().catch((error) => alert(`Discount saved on this device, but cloud publish failed: ${error.message}`));
     renderDiscountAdmin();
     renderMenu();
     alert("Discount saved.");
@@ -544,6 +603,7 @@ function bindEvents() {
     const category = byId("discountCategory").value;
     delete categoryDiscounts[category];
     localStorage.setItem("sfc_category_discounts", JSON.stringify(categoryDiscounts));
+    publishCloudMenu().catch((error) => alert(`Discount cleared on this device, but cloud publish failed: ${error.message}`));
     byId("discountPercent").value = "";
     renderDiscountAdmin();
     renderMenu();
@@ -586,3 +646,4 @@ renderCategories();
 renderMenu();
 renderCart();
 bindEvents();
+initCloudMenu();
