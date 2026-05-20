@@ -374,7 +374,7 @@ dialog {
   box-shadow: var(--shadow);
 }
 dialog::backdrop { background: rgba(20, 16, 13, .54); }
-.receipt-actions, .admin-head, .admin-actions, .whatsapp { display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+.receipt-actions, .admin-head, .admin-actions { display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
 .receipt {
   margin: 16px auto;
   max-width: 420px;
@@ -386,20 +386,39 @@ dialog::backdrop { background: rgba(20, 16, 13, .54); }
 .receipt table { width: 100%; border-collapse: collapse; margin: 12px 0; }
 .receipt td, .receipt th { padding: 7px 0; border-bottom: 1px solid #eee; text-align: left; }
 .receipt td:last-child, .receipt th:last-child { text-align: right; }
+.whatsapp {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
 .whatsapp a {
-  flex: 1 1 220px;
   text-align: center;
   text-decoration: none;
   border-radius: 8px;
-  padding: 13px;
+  padding: 15px 16px;
   color: #fff;
-  background: var(--accent);
+  background:
+    linear-gradient(135deg, #16a36f, #08744f);
   font-weight: 900;
+  box-shadow: 0 14px 28px rgba(19, 121, 91, 0.24);
 }
-.whatsapp .web-fallback {
-  color: var(--accent);
-  background: #fff;
-  border: 1px solid rgba(19, 121, 91, 0.35);
+.whatsapp-primary {
+  display: grid;
+  gap: 4px;
+}
+.whatsapp-primary span {
+  font-size: 17px;
+}
+.whatsapp-primary small {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  font-weight: 800;
+}
+.whatsapp-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
 }
 .admin-grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; margin-top: 18px; }
 .admin-grid section:last-child { grid-column: 1 / -1; }

@@ -1,4 +1,4 @@
-const KITCHEN_NUMBERS = ["918209531318", "918619973534"];
+const KITCHEN_NUMBER = "918209531318";
 const PACKAGING_CHARGE = 0;
 const MENU_VERSION = "veg-menu-2026-05-17-v2";
 const ADMIN_PASSWORD_CODE = "S2lycm9uQDI1MjAwMQ==";
@@ -321,10 +321,13 @@ function showReceipt(order) {
   lastReceipt = order;
   byId("receiptContent").innerHTML = receiptHtml(order);
   const encoded = encodeURIComponent(whatsappMessage(order));
-  byId("whatsappButtons").innerHTML = KITCHEN_NUMBERS.map((num) => (
-    `<a target="_blank" rel="noopener" href="whatsapp://send?phone=${num}&text=${encoded}">Place order here</a>
-    <a class="web-fallback" target="_blank" rel="noopener" href="https://web.whatsapp.com/send?phone=${num}&text=${encoded}">Web fallback ${num.slice(-10)}</a>`
-  )).join("");
+  byId("whatsappButtons").innerHTML = `
+    <a class="whatsapp-primary" target="_blank" rel="noopener" href="whatsapp://send?phone=${KITCHEN_NUMBER}&text=${encoded}">
+      <span>Place order on WhatsApp</span>
+      <small>Send receipt to 8209531318</small>
+    </a>
+    <p class="whatsapp-note">WhatsApp will open with the bill ready. Tap Send to confirm your takeaway order.</p>
+  `;
   byId("receiptDialog").showModal();
 }
 
