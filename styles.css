@@ -139,9 +139,9 @@ main {
   padding: clamp(24px, 5vw, 54px);
   color: #fff;
   background:
-    linear-gradient(90deg, rgba(28, 15, 13, 0.9), rgba(28, 15, 13, 0.38)),
-    url("https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=1400&q=80");
-  background-position: center;
+    linear-gradient(90deg, rgba(28, 15, 13, 0.88), rgba(28, 15, 13, 0.28)),
+    url("https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1600&q=82");
+  background-position: center 54%;
   background-size: cover;
   border-radius: 8px;
   box-shadow: var(--shadow);
