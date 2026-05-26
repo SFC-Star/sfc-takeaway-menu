@@ -15,9 +15,9 @@ This app can publish admin menu edits to every QR user through Firebase Firestor
      - `items`: array
      - `categoryDiscounts`: map
 
-## Basic Firestore rules
+## Protected Firestore rules
 
-For easiest testing:
+Use these rules after enabling Firebase Authentication with Google sign-in:
 
 ```txt
 rules_version = '2';
@@ -25,10 +25,22 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /menus/current {
       allow read: if true;
-      allow write: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email == "danybhati2001@gmail.com";
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
 ```
 
-These rules make menu editing work from the admin panel, but anyone technical could write to the menu if they inspect the site. For stronger security, use Firebase Auth for the admin account and change write rules to admin-only.
+## Required Authentication setup
+
+1. Firebase Console > Authentication > Get started.
+2. Sign-in method > Google > Enable.
+3. Authentication > Settings > Authorized domains.
+4. Add `sfc-star.github.io` if it is not already listed.
+
+After this, customers can read the menu, but only `danybhati2001@gmail.com` can update it from the admin panel.

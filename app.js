@@ -1,7 +1,7 @@
 const KITCHEN_NUMBER = "918209531318";
 const PACKAGING_CHARGE = 0;
 const MENU_VERSION = "veg-menu-2026-05-17-v2";
-const ADMIN_PASSWORD_CODE = "S2lycm9uQDI1MjAwMQ==";
+const ADMIN_EMAIL = "danybhati2001@gmail.com";
 
 const DEFAULT_MENU = [
   { id: "strawberry-shake", name: "Strawberry Shake", category: "Shakes", price: 79, desc: "Pure veg shake." },
@@ -189,15 +189,25 @@ async function initCloudMenu() {
     return;
   }
   try {
-    const [{ initializeApp }, firestore] = await Promise.all([
+    const [{ initializeApp }, firestore, authSdk] = await Promise.all([
       import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"),
-      import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js")
+      import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"),
+      import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js")
     ]);
     const { getFirestore, doc, onSnapshot, setDoc, serverTimestamp } = firestore;
+    const { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } = authSdk;
     const app = initializeApp(window.SFC_FIREBASE_CONFIG);
     const db = getFirestore(app);
+    const auth = getAuth(app);
     const menuRef = doc(db, "menus", "current");
-    cloudMenu = { setDoc, menuRef, serverTimestamp };
+    cloudMenu = { setDoc, menuRef, serverTimestamp, auth, provider: new GoogleAuthProvider(), signInWithPopup, signOut, adminUser: null };
+    onAuthStateChanged(auth, (user) => {
+      cloudMenu.adminUser = user && user.email?.toLowerCase() === ADMIN_EMAIL ? user : null;
+      const note = byId("cloudStatus");
+      if (note && user) {
+        note.textContent = cloudMenu.adminUser ? `Admin signed in: ${user.email}` : `Signed in as ${user.email}. This email cannot edit the menu.`;
+      }
+    });
     onSnapshot(menuRef, (snapshot) => {
       if (!snapshot.exists()) return;
       const data = snapshot.data();
@@ -223,8 +233,33 @@ async function initCloudMenu() {
   }
 }
 
+async function ensureAdminAccess() {
+  if (!cloudMenu?.auth) {
+    alert("Cloud admin login is not ready. Refresh the page and try again.");
+    return false;
+  }
+  const currentEmail = cloudMenu.auth.currentUser?.email?.toLowerCase();
+  if (currentEmail === ADMIN_EMAIL) return true;
+  try {
+    const result = await cloudMenu.signInWithPopup(cloudMenu.auth, cloudMenu.provider);
+    const email = result.user?.email?.toLowerCase();
+    if (email === ADMIN_EMAIL) {
+      cloudMenu.adminUser = result.user;
+      return true;
+    }
+    await cloudMenu.signOut(cloudMenu.auth);
+    alert(`Only ${ADMIN_EMAIL} can open admin or publish menu changes.`);
+    return false;
+  } catch (error) {
+    alert(`Admin login failed: ${error.message}`);
+    return false;
+  }
+}
+
 async function publishCloudMenu() {
   if (!cloudMenu) return false;
+  const allowed = await ensureAdminAccess();
+  if (!allowed) throw new Error(`Only ${ADMIN_EMAIL} can publish menu changes.`);
   await cloudMenu.setDoc(cloudMenu.menuRef, {
     items: menu,
     categoryDiscounts,
@@ -568,15 +603,9 @@ function bindEvents() {
 
   byId("closeReceiptBtn").addEventListener("click", () => byId("receiptDialog").close());
   byId("printReceiptBtn").addEventListener("click", () => window.print());
-  byId("adminToggle").addEventListener("click", () => {
-    if (sessionStorage.getItem("sfc_admin_ok") !== "yes") {
-      const password = prompt("Enter admin password");
-      if (btoa(password || "") !== ADMIN_PASSWORD_CODE) {
-        alert("Wrong password.");
-        return;
-      }
-      sessionStorage.setItem("sfc_admin_ok", "yes");
-    }
+  byId("adminToggle").addEventListener("click", async () => {
+    const allowed = await ensureAdminAccess();
+    if (!allowed) return;
     renderOrders();
     renderAnalytics();
     renderMenuEditor();
