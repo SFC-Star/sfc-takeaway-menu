@@ -55,6 +55,13 @@ let cloudMenu = null;
 
 const rupee = (value) => `Rs ${Math.round(value)}`;
 const byId = (id) => document.getElementById(id);
+const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;"
+}[char]));
 
 window.addEventListener("load", () => {
   setTimeout(() => byId("splashScreen")?.classList.add("hide"), 1250);
@@ -95,7 +102,7 @@ function trackPick(line) {
 function renderCategories() {
   if (!categories().includes(activeCategory)) activeCategory = categories()[0];
   byId("categoryChips").innerHTML = categories().map((cat) => (
-    `<button class="chip ${cat === activeCategory ? "active" : ""}" data-category="${cat}">${cat}</button>`
+    `<button class="chip ${cat === activeCategory ? "active" : ""}" data-category="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
   )).join("");
 }
 
@@ -110,19 +117,19 @@ function renderMenu() {
   byId("menuGrid").innerHTML = filtered.map((item) => `
     <article class="item-card ${cartCountFor(item.id) ? "selected" : ""}">
       <div>
-        <div class="item-title">${item.name}</div>
-        <div class="item-meta">${item.category} - ${item.desc}</div>
+        <div class="item-title">${escapeHtml(item.name)}</div>
+        <div class="item-meta">${escapeHtml(item.category)} - ${escapeHtml(item.desc)}</div>
         ${cartCountFor(item.id) ? `<div class="selected-badge">Selected ${cartCountFor(item.id)}</div>` : ""}
       </div>
       ${item.category === "Pizza" ? `
         <div class="size-options">
-          <button class="size-btn" data-add="${item.id}" data-size="Small">Small ${rupee(pizzaPrice(item, "Small"))}</button>
-          <button class="size-btn" data-add="${item.id}" data-size="Medium">Medium ${rupee(pizzaPrice(item, "Medium"))}</button>
+          <button class="size-btn" data-add="${escapeHtml(item.id)}" data-size="Small">Small ${rupee(pizzaPrice(item, "Small"))}</button>
+          <button class="size-btn" data-add="${escapeHtml(item.id)}" data-size="Medium">Medium ${rupee(pizzaPrice(item, "Medium"))}</button>
         </div>
       ` : item.category === "Offer" ? shakeOfferHtml() : `
         <div class="item-foot">
           <span class="price">${rupee(priceFor(item))}${discountFor(item.category) ? ` <small>${discountFor(item.category)}% off</small>` : ""}</span>
-          <button class="add-btn" data-add="${item.id}">${cartCountFor(item.id) ? "Add more" : "Add"}</button>
+          <button class="add-btn" data-add="${escapeHtml(item.id)}">${cartCountFor(item.id) ? "Add more" : "Add"}</button>
         </div>
       `}
     </article>
@@ -140,7 +147,7 @@ function shakeOfferHtml() {
   return `
     <div class="offer-picker">
       <select data-offer-select="shake-offer">
-        ${shakes.map((shake) => `<option value="${shake.id}">${shake.name} x 3 - ${rupee(Math.round(shake.price * 3 * 0.85))}</option>`).join("")}
+        ${shakes.map((shake) => `<option value="${escapeHtml(shake.id)}">${escapeHtml(shake.name)} x 3 - ${rupee(Math.round(shake.price * 3 * 0.85))}</option>`).join("")}
       </select>
       <div class="item-foot">
         <span class="price" data-offer-price>${rupee(price)}</span>
@@ -161,11 +168,11 @@ function renderCart() {
   const lines = cartLines();
   byId("cartItems").innerHTML = lines.map((item) => `
     <div class="cart-row">
-      <div><strong>${item.name}</strong><br><small>${item.category} - ${rupee(item.price)} each</small></div>
+      <div><strong>${escapeHtml(item.name)}</strong><br><small>${escapeHtml(item.category)} - ${rupee(item.price)} each</small></div>
       <div class="qty">
-        <button data-dec="${item.key}" type="button">-</button>
+        <button data-dec="${escapeHtml(item.key)}" type="button">-</button>
         <strong>${item.qty}</strong>
-        <button data-inc="${item.key}" type="button">+</button>
+        <button data-inc="${escapeHtml(item.key)}" type="button">+</button>
       </div>
       <strong>${rupee(item.price * item.qty)}</strong>
     </div>
@@ -314,15 +321,15 @@ function makeOrder() {
 function receiptHtml(order) {
   return `
     <h2>Star Feast Cafe</h2>
-    <p><strong>Takeaway bill</strong><br>Order: ${order.id}<br>${new Date(order.createdAt).toLocaleString()}</p>
-    <p>Customer: ${order.customerName}<br>Mobile: ${order.customerPhone}<br>Payment: ${order.paymentMode}</p>
+    <p><strong>Takeaway bill</strong><br>Order: ${escapeHtml(order.id)}<br>${new Date(order.createdAt).toLocaleString()}</p>
+    <p>Customer: ${escapeHtml(order.customerName)}<br>Mobile: ${escapeHtml(order.customerPhone)}<br>Payment: ${escapeHtml(order.paymentMode)}</p>
     <table>
       <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
-      <tbody>${order.items.map((item) => `<tr><td>${item.name}<br><small>${rupee(item.price)}</small></td><td>${item.qty}</td><td>${rupee(item.price * item.qty)}</td></tr>`).join("")}</tbody>
+      <tbody>${order.items.map((item) => `<tr><td>${escapeHtml(item.name)}<br><small>${rupee(item.price)}</small></td><td>${item.qty}</td><td>${rupee(item.price * item.qty)}</td></tr>`).join("")}</tbody>
     </table>
     <p>Subtotal: <strong>${rupee(order.subtotal)}</strong><br>Packaging: <strong>${rupee(order.packaging)}</strong></p>
     <h3>Final bill: ${rupee(order.total)}</h3>
-    ${order.notes ? `<p>Notes: ${order.notes}</p>` : ""}
+    ${order.notes ? `<p>Notes: ${escapeHtml(order.notes)}</p>` : ""}
     <p>No home delivery. Please collect from counter.</p>
   `;
 }
@@ -374,10 +381,10 @@ function renderOrders() {
       <tbody>
         ${orders.map((order) => `
           <tr>
-            <td><input type="radio" name="adminOrder" value="${order.id}"></td>
-            <td>${order.id}<br><small>${order.type}</small></td>
-            <td>${order.customerName}<br><small>${order.customerPhone}</small></td>
-            <td>${order.items.map((item) => `${item.name} x ${item.qty}`).join("<br>")}</td>
+            <td><input type="radio" name="adminOrder" value="${escapeHtml(order.id)}"></td>
+            <td>${escapeHtml(order.id)}<br><small>${escapeHtml(order.type)}</small></td>
+            <td>${escapeHtml(order.customerName)}<br><small>${escapeHtml(order.customerPhone)}</small></td>
+            <td>${order.items.map((item) => `${escapeHtml(item.name)} x ${item.qty}`).join("<br>")}</td>
             <td><strong>${rupee(order.total)}</strong><br><small>${order.paymentMode}</small></td>
             <td>${new Date(order.createdAt).toLocaleString()}</td>
           </tr>
@@ -411,9 +418,9 @@ function renderAnalytics() {
   byId("analyticsPanel").innerHTML = `
     <div class="metric-card"><span>Total orders</span><strong>${orders.length}</strong><small>${totalItems} items sold</small></div>
     <div class="metric-card"><span>Total revenue</span><strong>${rupee(revenue)}</strong><small>Saved on this device</small></div>
-    <div class="metric-card"><span>Most ordered</span><strong>${topSold?.name || "No data"}</strong><small>${topSold ? `${topSold.qty} qty, ${rupee(topSold.revenue)}` : "Place orders to track"}</small></div>
-    <div class="metric-card"><span>Most selected</span><strong>${topPicked?.name || "No data"}</strong><small>${topPicked ? `${topPicked.count} menu taps` : "Add items to track"}</small></div>
-    <div class="metric-card"><span>Top category</span><strong>${topCategory?.category || "No data"}</strong><small>${topCategory ? `${topCategory.qty} qty, ${rupee(topCategory.revenue)}` : "No category sales yet"}</small></div>
+    <div class="metric-card"><span>Most ordered</span><strong>${escapeHtml(topSold?.name || "No data")}</strong><small>${topSold ? `${topSold.qty} qty, ${rupee(topSold.revenue)}` : "Place orders to track"}</small></div>
+    <div class="metric-card"><span>Most selected</span><strong>${escapeHtml(topPicked?.name || "No data")}</strong><small>${topPicked ? `${topPicked.count} menu taps` : "Add items to track"}</small></div>
+    <div class="metric-card"><span>Top category</span><strong>${escapeHtml(topCategory?.category || "No data")}</strong><small>${topCategory ? `${topCategory.qty} qty, ${rupee(topCategory.revenue)}` : "No category sales yet"}</small></div>
   `;
 }
 
@@ -423,10 +430,10 @@ function renderMenuEditor() {
 }
 
 function renderDiscountAdmin() {
-  byId("discountCategory").innerHTML = categories().map((cat) => `<option value="${cat}">${cat}</option>`).join("");
+  byId("discountCategory").innerHTML = categories().map((cat) => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join("");
   byId("discountList").innerHTML = categories().map((cat) => {
     const discount = discountFor(cat);
-    return `<span class="discount-pill">${cat}: ${discount}%</span>`;
+    return `<span class="discount-pill">${escapeHtml(cat)}: ${discount}%</span>`;
   }).join("");
 }
 
@@ -437,9 +444,9 @@ function slugify(text) {
 function renderItemEditor(selectedId = byId("itemEditorSelect")?.value || menu[0]?.id || "") {
   byId("itemEditorSelect").innerHTML = [
     `<option value="">Add new item</option>`,
-    ...menu.map((item) => `<option value="${item.id}">${item.category} - ${item.name}</option>`)
+    ...menu.map((item) => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.category)} - ${escapeHtml(item.name)}</option>`)
   ].join("");
-  byId("categoryOptions").innerHTML = categories().map((cat) => `<option value="${cat}"></option>`).join("");
+  byId("categoryOptions").innerHTML = categories().map((cat) => `<option value="${escapeHtml(cat)}"></option>`).join("");
   byId("itemEditorSelect").value = selectedId;
   const item = menu.find((entry) => entry.id === selectedId);
   byId("itemNameInput").value = item?.name || "";
