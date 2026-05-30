@@ -1,5 +1,5 @@
 window.SFC_FIREBASE_CONFIG = {
-  apiKey: "AIzaSyAwRET4NLr9MOE88_EB2eOVI8fYIaoDcXc",
+  apiKey: "AIzaSyAwRET4Nlr9MOE88_EB2eOVI8fYIaoDcXc",
   authDomain: "star-feast-cafe.firebaseapp.com",
   projectId: "star-feast-cafe",
   storageBucket: "star-feast-cafe.firebasestorage.app",
