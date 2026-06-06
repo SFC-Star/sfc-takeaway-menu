@@ -1,44 +1,44 @@
 const KITCHEN_NUMBER = "918209531318";
 const PACKAGING_CHARGE = 0;
-const MENU_VERSION = "veg-menu-2026-05-17-v2";
+const MENU_VERSION = "veg-menu-2026-06-06-final";
 const ADMIN_EMAIL = "danybhati2001@gmail.com";
 
 const DEFAULT_MENU = [
-  { id: "strawberry-shake", name: "Strawberry Shake", category: "Shakes", price: 79, desc: "Pure veg shake." },
-  { id: "pineapple-shake", name: "Pineapple Shake", category: "Shakes", price: 79, desc: "Pure veg shake." },
-  { id: "chocolate-shake", name: "Chocolate Shake", category: "Shakes", price: 99, desc: "Pure veg shake." },
-  { id: "cold-coffee", name: "Cold Coffee", category: "Shakes", price: 99, desc: "Chilled coffee." },
-  { id: "kit-kat-shake", name: "Kit-Kat Shake", category: "Shakes", price: 109, desc: "Pure veg shake." },
-  { id: "oreo-shake", name: "Oreo Shake", category: "Shakes", price: 109, desc: "Pure veg shake." },
-  { id: "plain-maggi", name: "Plain Maggi", category: "Maggi", price: 49, desc: "Fresh takeaway Maggi." },
-  { id: "veg-maggi", name: "Veg Maggi", category: "Maggi", price: 69, desc: "Fresh takeaway Maggi." },
-  { id: "masala-maggi", name: "Masala Maggi", category: "Maggi", price: 79, desc: "Fresh takeaway Maggi." },
-  { id: "cheese-maggi", name: "Cheese Maggi", category: "Maggi", price: 99, desc: "Fresh takeaway Maggi." },
-  { id: "onion-capsicum-pizza", name: "Onion Capsicum Pizza", category: "Pizza", price: 199, desc: "Pure veg pizza." },
-  { id: "margherita-pizza", name: "Margherita Pizza", category: "Pizza", price: 249, desc: "Pure veg pizza." },
-  { id: "panner-tandoori-pizza", name: "Panner Tandoori Pizza", category: "Pizza", price: 299, desc: "Pure veg pizza." },
-  { id: "red-sauce-pasta", name: "Red Sauce Pasta", category: "Italian", price: 255, desc: "Pure veg Italian." },
-  { id: "white-sauce-pasta", name: "White Sauce Pasta", category: "Italian", price: 275, desc: "Pure veg Italian." },
-  { id: "garlic-bread", name: "Garlic Bread", category: "Italian", price: 175, desc: "Pure veg side." },
-  { id: "plain-french-fries", name: "Plain French Fries", category: "French Fries", price: 149, desc: "Crispy veg fries." },
-  { id: "masala-french-fries", name: "Masala French Fries", category: "French Fries", price: 185, desc: "Crispy veg fries." },
-  { id: "peri-peri-fries", name: "Peri-Peri Fries", category: "French Fries", price: 185, desc: "Crispy veg fries." },
-  { id: "veg-sandwich", name: "Veg Sandwich", category: "Sandwich", price: 99, desc: "Pure veg sandwich." },
-  { id: "veg-grill-sandwich", name: "Veg Grill Sandwich", category: "Sandwich", price: 129, desc: "Pure veg grilled sandwich." },
-  { id: "panner-tandoori-sandwich", name: "Panner Tandoori Sandwich", category: "Sandwich", price: 209, desc: "Pure veg sandwich." },
-  { id: "alloo-tikki-sandwich", name: "Alloo Tikki Sandwich", category: "Sandwich", price: 199, desc: "Pure veg sandwich." },
-  { id: "veg-burger", name: "Veg Burger", category: "Burger", price: 149, desc: "Pure veg burger." },
-  { id: "cheese-burger", name: "Cheese Burger", category: "Burger", price: 175, desc: "Pure veg burger." },
-  { id: "paneer-burger", name: "Paneer Burger", category: "Burger", price: 199, desc: "Pure veg burger." },
-  { id: "combo-veg-grill-cold-coffee", name: "Veg Grill Sandwich + Cold Coffee", category: "Combo", price: 208, desc: "Combo offer." },
-  { id: "combo-panner-tandoori-cold-coffee", name: "Paneer Tandoori Sandwich + Cold Coffee", category: "Combo", price: 288, desc: "Combo offer." },
-  { id: "combo-onion-fries-shake", name: "Onion Capsicum Pizza (Medium Size) + Plain French Fries + Strawberry / Pineapple Shake", category: "Combo", price: 399, desc: "Combo offer." },
-  { id: "combo-panner-pizza-sandwich-coffee", name: "Paneer Tandoori Pizza (Medium Size) + Veg Grill Sandwich + 2X Cold Coffee", category: "Combo", price: 599, desc: "Combo offer." },
-  { id: "combo-veg-maggi-cold-coffee", name: "Veg Maggi + Cold Coffee", category: "Combo", price: 149, desc: "Combo offer." },
-  { id: "combo-red-pasta-oreo", name: "Red Sauce Pasta + Oreo Shake", category: "Combo", price: 344, desc: "Combo offer." },
-  { id: "combo-white-pasta-kitkat", name: "White Sauce Pasta + Kit-Kat Shake", category: "Combo", price: 364, desc: "Combo offer." },
-  { id: "combo-family-veg", name: "Tandoori Paneer Pizza (Medium Size) + Onion Capsicum Pizza (Medium Size) + Red Sauce Pasta + Veg Grill Sandwich + Masala French Fries", category: "Combo", price: 999, desc: "Combo offer." },
-  { id: "shake-offer", name: "15% OFF Any Shake x 3", category: "Offer", price: 0, desc: "Choose any shake. Quantity is fixed at 3 and 15% discount is applied automatically." }
+  { id: "chocolate-shake", name: "Chocolate Shake", category: "Shakes", price: 119, desc: "Chocolate syrup, chocolate powder, ice cream, milk, ice." },
+  { id: "cold-coffee", name: "Cold Coffee", category: "Shakes", price: 119, desc: "Coffee powder, chocolate syrup, chocolate powder, ice cream, milk, ice." },
+  { id: "kit-kat-shake", name: "Kit-Kat Shake", category: "Shakes", price: 129, desc: "Kit-Kat, chocolate syrup, chocolate powder, ice cream, milk, ice." },
+  { id: "strawberry-shake", name: "Strawberry Shake", category: "Shakes", price: 99, desc: "Strawberry crush, ice cream, milk, ice." },
+  { id: "pineapple-shake", name: "Pineapple Shake", category: "Shakes", price: 99, desc: "Pineapple crush, ice cream, milk, ice." },
+  { id: "oreo-shake", name: "Oreo Shake", category: "Shakes", price: 129, desc: "Oreo, chocolate syrup, chocolate powder, ice cream, milk, ice." },
+  { id: "masala-maggi", name: "Masala Maggi", category: "Maggi", price: 99, desc: "Onion, capsicum, tomato, veg Maggi, spices." },
+  { id: "cheese-maggi", name: "Cheese Maggi", category: "Maggi", price: 109, desc: "Mozzarella cheese, cheddar cheese, onion, capsicum, tomato, veg Maggi, spices." },
+  { id: "plain-maggi", name: "Plain Maggi", category: "Maggi", price: 59, desc: "Plain Maggi." },
+  { id: "veg-maggi", name: "Veg. Maggi", category: "Maggi", price: 79, desc: "Onion, capsicum, tomato, veg Maggi." },
+  { id: "onion-capsicum-pizza", name: "Onion Capsicum Pizza", category: "Pizza", price: 209, prices: { Small: 139, Large: 209 }, desc: "Onion, capsicum, pizza sauce, cheddar cheese, mozzarella cheese, oregano, chilli flakes, pizza spices." },
+  { id: "margherita-pizza", name: "Margherita Pizza", category: "Pizza", price: 219, prices: { Small: 159, Large: 219 }, desc: "Pizza sauce, cheddar cheese, mozzarella cheese, oregano, chilli flakes, pizza spices." },
+  { id: "paneer-tandoori-pizza", name: "Paneer Tandoori Pizza", category: "Pizza", price: 239, prices: { Small: 129, Large: 239 }, desc: "Onion, capsicum, tomato, tandoori sauce, spices, cheddar cheese, mozzarella cheese, oregano, chilli flakes." },
+  { id: "garlic-bread", name: "Garlic Bread", category: "Italian", price: 159, desc: "Garlic bread with mozzarella cheese, cheddar cheese, oregano, chilli flakes, pizza spices." },
+  { id: "red-sauce-pasta", name: "Red Sauce Pasta", category: "Italian", price: 209, desc: "Tomato sauce, penne pasta, spices, white pepper, black pepper, cheddar cheese." },
+  { id: "white-sauce-pasta", name: "White Sauce Pasta", category: "Italian", price: 219, desc: "Milk, white sauce, penne pasta, black pepper, white pepper, salt, mozzarella cheese, cheddar cheese." },
+  { id: "peri-peri-fries", name: "Peri-Peri Fries", category: "French Fries", price: 109, desc: "Peri peri masala." },
+  { id: "plain-french-fries", name: "Plain French Fries", category: "French Fries", price: 89, desc: "With chaat masala." },
+  { id: "masala-french-fries", name: "Masala French Fries", category: "French Fries", price: 99, desc: "Salt, chaat masala, lal mirch." },
+  { id: "paneer-tandoori-sandwich", name: "Paneer Tandoori Sandwich", category: "Sandwich", price: 149, desc: "3 layer white bread, onion, tomato, capsicum, tandoori mayonnaise, chaat masala, spices." },
+  { id: "veg-sandwich", name: "Veg. Sandwich", category: "Sandwich", price: 109, desc: "3 layer white bread, tomato, cucumber, cabbage, mayonnaise, chaat masala." },
+  { id: "veg-grill-sandwich", name: "Veg. Grill Sandwich", category: "Sandwich", price: 119, desc: "3 layer white bread, tomato, cucumber, cabbage, mayonnaise, chaat masala." },
+  { id: "alloo-tikki-sandwich", name: "Alloo Tikki Sandwich", category: "Sandwich", price: 169, desc: "3 layer white bread, 2 alloo tikki, tandoori mayonnaise, chaat masala, spices." },
+  { id: "paneer-burger", name: "Paneer Burger", category: "Burger", price: 159, desc: "Burger bread, onion, tomato, capsicum, tandoori mayonnaise, chaat masala, spices." },
+  { id: "veg-burger", name: "Veg. Burger", category: "Burger", price: 119, desc: "Burger bread, mayonnaise, cabbage, tomato, onion, alloo tikki, chaat masala." },
+  { id: "cheese-burger", name: "Cheese Burger", category: "Burger", price: 129, desc: "Burger bread, mayonnaise, cabbage, tomato, onion, alloo tikki, chaat masala, cheddar cheese, mozzarella cheese." },
+  { id: "combo-onion-small-fries-shake", name: "Onion Capsicum Pizza (Small Size) + Plain French Fries + Strawberry / Pineapple Shake", category: "Combo", price: 299, desc: "Choose any one shake." },
+  { id: "combo-veg-grill-cold-coffee", name: "Veg Grill Sandwich + Cold Coffee", category: "Combo", price: 209, desc: "Combo offer." },
+  { id: "combo-paneer-tandoori-cold-coffee", name: "Paneer Tandoori Sandwich + Cold Coffee", category: "Combo", price: 249, desc: "Combo offer." },
+  { id: "combo-veg-maggi-cold-coffee", name: "Veg Maggi + Cold Coffee", category: "Combo", price: 179, desc: "Combo offer." },
+  { id: "combo-red-pasta-oreo", name: "Red Sauce Pasta + Oreo Shake", category: "Combo", price: 349, desc: "Combo offer." },
+  { id: "combo-paneer-pizza-sandwich-coffee", name: "Paneer Tandoori Pizza (Small Size) + Veg Grill Sandwich + 2X Cold Coffee", category: "Combo", price: 489, desc: "Combo offer." },
+  { id: "combo-white-pasta-kitkat", name: "White Sauce Pasta + Kit-Kat Shake", category: "Combo", price: 319, desc: "Combo offer." },
+  { id: "combo-family-veg", name: "Tandoori Paneer Pizza (Small Size) + Onion Capsicum Pizza (Small Size) + Red Sauce Pasta + Veg Grill Sandwich + Masala French Fries", category: "Combo", price: 679, desc: "Combo offer." },
+  { id: "shake-offer", name: "15% OFF Any Flavour Shake x 3", category: "Offer", price: 0, desc: "Any shake of same flavour only. Quantity is fixed at 3 and 15% discount is applied automatically." }
 ];
 
 if (localStorage.getItem("sfc_menu_version") !== MENU_VERSION) {
@@ -80,8 +80,13 @@ function priceFor(item, rawPrice = item.price) {
   return Math.round(rawPrice * (1 - discountFor(item.category) / 100));
 }
 
+function pizzaSizes(item) {
+  return Object.keys(item.prices || { Small: Math.round(item.price * 0.7), Large: item.price });
+}
+
 function pizzaPrice(item, size) {
-  return priceFor(item, size === "Small" ? Math.round(item.price * 0.7) : item.price);
+  const basePrice = item.prices?.[size] ?? item.price;
+  return priceFor(item, basePrice);
 }
 
 function cartCountFor(itemId) {
@@ -123,8 +128,7 @@ function renderMenu() {
       </div>
       ${item.category === "Pizza" ? `
         <div class="size-options">
-          <button class="size-btn" data-add="${escapeHtml(item.id)}" data-size="Small">Small ${rupee(pizzaPrice(item, "Small"))}</button>
-          <button class="size-btn" data-add="${escapeHtml(item.id)}" data-size="Medium">Medium ${rupee(pizzaPrice(item, "Medium"))}</button>
+          ${pizzaSizes(item).map((size) => `<button class="size-btn" data-add="${escapeHtml(item.id)}" data-size="${escapeHtml(size)}">${escapeHtml(size)} ${rupee(pizzaPrice(item, size))}</button>`).join("")}
         </div>
       ` : item.category === "Offer" ? shakeOfferHtml() : `
         <div class="item-foot">
@@ -219,6 +223,8 @@ async function initCloudMenu() {
       if (!snapshot.exists()) return;
       const data = snapshot.data();
       if (!Array.isArray(data.items)) return;
+      if (data.menuVersion && data.menuVersion !== MENU_VERSION) return;
+      if (!data.menuVersion && data.updatedAt?.toDate && data.updatedAt.toDate() < new Date("2026-06-06T00:00:00+05:30")) return;
       menu = data.items.map((item) => ({ ...item, price: Number(item.price), desc: item.desc || "" }));
       localStorage.setItem("sfc_menu", JSON.stringify(menu));
       categoryDiscounts = data.categoryDiscounts || categoryDiscounts;
@@ -270,6 +276,7 @@ async function publishCloudMenu() {
   await cloudMenu.setDoc(cloudMenu.menuRef, {
     items: menu,
     categoryDiscounts,
+    menuVersion: MENU_VERSION,
     updatedAt: cloudMenu.serverTimestamp()
   }, { merge: true });
   return true;
@@ -280,8 +287,9 @@ function addToCart(id, options = {}) {
   if (!item) return;
   const size = options.size || "";
   const key = options.key || `${id}${size ? `-${size.toLowerCase()}` : ""}`;
-  const price = options.price ?? (item.category === "Pizza" ? pizzaPrice(item, size || "Medium") : priceFor(item));
-  const name = options.name || (item.category === "Pizza" ? `${item.name} (${size || "Medium"} Size)` : item.name);
+  const defaultPizzaSize = pizzaSizes(item)[0] || "Large";
+  const price = options.price ?? (item.category === "Pizza" ? pizzaPrice(item, size || defaultPizzaSize) : priceFor(item));
+  const name = options.name || (item.category === "Pizza" ? `${item.name} (${size || defaultPizzaSize} Size)` : item.name);
   cart[key] = cart[key] || { key, itemId: id, name, category: item.category, price, qty: 0 };
   cart[key].qty += options.qty || 1;
   trackPick({ name, category: item.category, qty: options.qty || 1 });
